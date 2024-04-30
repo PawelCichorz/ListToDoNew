@@ -1,0 +1,29 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px;
+}
+.email {
+  margin-bottom: 20px;
+}
+label {
+  font-size: 15px;
+  padding: 10px 25px;
+}
+input {
+  font-size: 15px;
+  padding: 10px 25px;
+}
+button {
+  margin-top: 30px;
+  padding: 10px 20px;
+}
+.link {
+  margin-top: 30px;
+}
+.title {
+  font-size: 30px;
+  font-weight: 400;
+}
