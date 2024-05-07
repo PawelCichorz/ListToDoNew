@@ -1,0 +1,22 @@
+.notesmain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 250px;
+}
+.butty {
+  background-color: burlywood;
+  padding: 7.5px 10px;
+  margin: 3px;
+}
+.buttys {
+  background-color: red;
+  padding: 7.5px 10px;
+  margin: 3px;
+}
+
+.zad {
+  margin: 3px;
+  max-width: 200px;
+}
