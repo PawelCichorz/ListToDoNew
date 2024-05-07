@@ -45,7 +45,7 @@ function Notes(props) {
 
   const history = useNavigate();
 
-  //UNIWERSALNA FUNKCJA POBIERANIA I WYPAKOWYWANIA NOTATEK
+
   async function fetchNotes(day) {
     const res = await axios.get(`${apiUrl+day}`);
 
