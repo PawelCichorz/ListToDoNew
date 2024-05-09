@@ -1,10 +1,9 @@
 import axios from "axios";
-import { apiUrl } from '../BackendPaths'
-
+import { apiUrl } from "../BackendPaths";
 
 // Pobieranie notatek dla danego dnia
 export async function fetchNotesBackend(day) {
-  const res = await axios.get(apiUrl+day);
+  const res = await axios.get(apiUrl + day);
   return res.data;
 }
 
@@ -15,7 +14,7 @@ export async function deleteNoteBackend(id, day) {
 
 // Dodawanie notatki
 export async function addNoteBackend(title, body, day) {
-  const res = await axios.post(apiUrl+day, {
+  const res = await axios.post(apiUrl + day, {
     title,
     body,
   });
@@ -23,6 +22,6 @@ export async function addNoteBackend(title, body, day) {
 }
 
 // Edytowanie notatki
-export async function editNote(note, day) {
+export async function editNoteBackend(note, day) {
   await axios.put(`${apiUrl}${day}/${note._id}`, note);
 }

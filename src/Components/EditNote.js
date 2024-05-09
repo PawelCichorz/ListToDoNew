@@ -12,8 +12,8 @@ function EditNote(props) {
       body: desc,
       _id: props.id,
     };
-    
-    props.onEdit(note,props.day);
+
+    props.onEdit(note, props.day);
   };
 
   return (
@@ -35,9 +35,5 @@ function EditNote(props) {
     </div>
   );
 }
-
-
-
-
 
 export default EditNote;
