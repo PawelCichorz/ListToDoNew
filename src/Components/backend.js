@@ -4,7 +4,7 @@ import { apiUrl } from '../BackendPaths'
 
 // Pobieranie notatek dla danego dnia
 export async function fetchNotesBackend(day) {
-  const res = await axios.get(`${apiUrl}${day}`);
+  const res = await axios.get(apiUrl+day);
   return res.data;
 }
 

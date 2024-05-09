@@ -5,6 +5,9 @@ import { useState ,useEffect } from "react";
 import EditNote from "./EditNote";
 import {  fetchNotesBackend,addNoteBackend} from "./backend"
 
+
+
+
 function NoteForm(props) {
 
   //edytowana notatka
@@ -18,11 +21,19 @@ function NoteForm(props) {
   // const [modalOpen, setModalOpen] = useState(false);
 
   //stan notatki na dany dzień
-  const [notesByDay, setNotesByDay] = useState([]);
+  const [notesByDay, setNotesByDay] = useState({
+    m: [],
+    t: [],
+    w: [],
+    th: [],
+    f: [],
+    s: [],
+    su: [],
+  });
 
 
 
-console.log(notesByDay)
+console.log(notesByDay.m)
 
 
 
@@ -53,6 +64,7 @@ console.log(notesByDay)
   //otwarcie inputów do dodawania notatki
   const openAdd = () => {
   setAddOpen(true)
+ 
   };
 
   //dodawanie notatki
@@ -66,9 +78,10 @@ console.log(notesByDay)
 
   async function addNote() {
     const newNote = await addNoteBackend(titlem, descm, props.day);
-    setNotesByDay((prevState) => ([
-      ...prevState, newNote]
-    ));
+    setNotesByDay((prevState) => ({
+      ...prevState,
+      [props.day]: [...prevState[props.day], newNote],
+    }));
     setAddOpen(!addOpen);
     Settitlem("");
     Setdescm("");
@@ -76,17 +89,16 @@ console.log(notesByDay)
 
 
   //pobieranie notatek
-  async function fetchNotes() {
-    const res = await fetchNotesBackend(props.day)
-
-    const notes = res.data;
-    setNotesByDay((prevState) => ([
-      ...prevState,notes
-    ]));
+  async function fetchNotes(day) {
+    const notes= await fetchNotesBackend(day)
+    setNotesByDay((prevState) => ({
+      ...prevState,
+      [day]: notes,
+    }));
   }
 
   useEffect(() => {
-    fetchNotes();
+    fetchNotes(props.day);
   }, []);
 
   return (
@@ -110,7 +122,7 @@ console.log(notesByDay)
               <button onClick={ToglleModal}>Anuluj</button>
             </Modal>
             <p className="zada ">{props.dayTitle} </p>
-            {props.notesByDay.map((notatka) => (
+            {notesByDay[props.day].map((notatka) => (
               <Note
                 key={notatka._id}
                 name={notatka.title}

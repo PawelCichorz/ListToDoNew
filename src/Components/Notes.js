@@ -1,6 +1,6 @@
 import "./Notes.css";
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, } from "react";
 import { Link } from "react-router-dom";
 // import Note from "./Note";
 // import Modal from "react-modal";
@@ -46,21 +46,21 @@ function Notes(props) {
   const history = useNavigate();
 
 
-  async function fetchNotes(day) {
-    const res = await axios.get(`${apiUrl+day}`);
+  // async function fetchNotes(day) {
+  //   const res = await axios.get(`${apiUrl+day}`);
 
-    const notes = res.data;
-    console.log(notes);
-    setNotesByDay((prevState) => ({
-      ...prevState,
-      [day]: notes,
-    }));
-  }
+  //   const notes = res.data;
+  //   console.log(notes);
+  //   setNotesByDay((prevState) => ({
+  //     ...prevState,
+  //     [day]: notes,
+  //   }));
+  // }
 
   // USE EFFECT WYPAKOWYWANIA NOTATEK
-  useEffect(() => {
-    fetchNotes("m");
-  }, []);
+  // useEffect(() => {
+  //   fetchNotes("m");
+  // }, []);
 
   //UNIWERSALNA FUNKCJA USUWANIA
   async function deleteNote(id, day) {
