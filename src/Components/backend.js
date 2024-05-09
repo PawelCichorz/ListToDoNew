@@ -9,7 +9,7 @@ export async function fetchNotesBackend(day) {
 }
 
 // Usuwanie notatki
-export async function deleteNote(id, day) {
+export async function deleteNoteBackend(id, day) {
   await axios.delete(`${apiUrl}${day}/${id}`);
 }
 

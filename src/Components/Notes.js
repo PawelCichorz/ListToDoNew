@@ -12,15 +12,15 @@ import { apiUrl } from '../BackendPaths'
 
 function Notes(props) {
   //stan otwarcia się formularza do dodawania notatek
-  const [addOpen, setAddOpen] = useState({
-    mOpen: false,
-    tOpen: false,
-    wOpen: false,
-    thOpen: false,
-    fOpen: false,
-    sOpen: false,
-    suOpen: false,
-  });
+  // const [addOpen, setAddOpen] = useState({
+  //   mOpen: false,
+  //   tOpen: false,
+  //   wOpen: false,
+  //   thOpen: false,
+  //   fOpen: false,
+  //   sOpen: false,
+  //   suOpen: false,
+  // });
   //stan otwarcia się modalu
   const [modalOpen, setModalOpen] = useState({
     mModal: false,
@@ -63,39 +63,39 @@ function Notes(props) {
   // }, []);
 
   //UNIWERSALNA FUNKCJA USUWANIA
-  async function deleteNote(id, day) {
-    await axios.delete(`${apiUrl+day}/${id}`);
-    setNotesByDay((prevState) => ({
-      ...prevState,
-      [day]: prevState[day].filter((note) => note._id !== id),
-    }));
-  }
+  // async function deleteNote(id, day) {
+  //   await axios.delete(`${apiUrl+day}/${id}`);
+  //   setNotesByDay((prevState) => ({
+  //     ...prevState,
+  //     [day]: prevState[day].filter((note) => note._id !== id),
+  //   }));
+  // }
 
-  //UNIWERSALNA FUNKCJA DODAWANIA
-  async function AddNote(title, body, day) {
-    const res = await axios.post(`${apiUrl+ day}`, {
-      title,
-      body,
-    });
-    const newNote = res.data;
-    setNotesByDay((prevState) => ({
-      ...prevState,
-      [day]: [...prevState[day], newNote],
-    }));
+  // //UNIWERSALNA FUNKCJA DODAWANIA
+  // async function AddNote(title, body, day) {
+  //   const res = await axios.post(`${apiUrl+ day}`, {
+  //     title,
+  //     body,
+  //   });
+  //   const newNote = res.data;
+  //   setNotesByDay((prevState) => ({
+  //     ...prevState,
+  //     [day]: [...prevState[day], newNote],
+  //   }));
 
-    setAddOpen((prevState) => ({
-      ...prevState,
-      [day + "Open"]: !prevState,
-    }));
-  }
+  //   setAddOpen((prevState) => ({
+  //     ...prevState,
+  //     [day + "Open"]: !prevState,
+  //   }));
+  // }
 
   //otwieranie formularza do dodania notatki
-  const openAdd = (day) => {
-    setAddOpen((prevState) => ({
-      ...prevState,
-      [day + "Open"]: true,
-    }));
-  };
+  // const openAdd = (day) => {
+  //   setAddOpen((prevState) => ({
+  //     ...prevState,
+  //     [day + "Open"]: true,
+  //   }));
+  // };
   //otwieranie modalu
   const openModal = (day) => {
     setModalOpen((prevState) => ({
@@ -131,92 +131,85 @@ function Notes(props) {
   return (
     <div className="lolek">
       <NoteForm
-        notesByDay={notesByDay.m}
         Editnote={(note, day) => Editnote(note, day)}
-        deleteNote={(id, day) => deleteNote(id, day)}
-        AddNote={(title, body, day) => AddNote(title, body, day)}
+  
+   
         dayTitle={"Poniedziałek"}
         openDay={"mOpen"}
-        openAdd={(day) => openAdd(day)}
-        addOpens={addOpen.mOpen}
+       
         day={"m"}
         openModal={(day) => openModal(day)}
         modalOpens={modalOpen.mModal}
       />
       <NoteForm
-        notesByDay={notesByDay.t}
+        
         Editnote={(note, day) => Editnote(note, day)}
-        deleteNote={(id, day) => deleteNote(id, day)}
-        AddNote={(title, body, day) => AddNote(title, body, day)}
+ 
+        
         dayTitle={"Wtorek"}
         openDay={"tOpen"}
-        openAdd={(day) => openAdd(day)}
-        addOpens={addOpen.tOpen}
+        
         day={"t"}
         openModal={(day) => openModal(day)}
         modalOpens={modalOpen.tModal}
       />
       <NoteForm
-        notesByDay={notesByDay.w}
+       
         Editnote={(note, day) => Editnote(note, day)}
-        deleteNote={(id, day) => deleteNote(id, day)}
-        AddNote={(title, body, day) => AddNote(title, body, day)}
+       
+    
         dayTitle={"Środa"}
         openDay={"wOpen"}
-        openAdd={(day) => openAdd(day)}
-        addOpens={addOpen.wOpen}
+       
         day={"w"}
         openModal={(day) => openModal(day)}
         modalOpens={modalOpen.wModal}
       />
       <NoteForm
-        notesByDay={notesByDay.th}
+       
         Editnote={(note, day) => Editnote(note, day)}
-        deleteNote={(id, day) => deleteNote(id, day)}
-        AddNote={(title, body, day) => AddNote(title, body, day)}
+        
+       
         dayTitle={"Czwartek"}
         openDay={"thOpen"}
-        openAdd={(day) => openAdd(day)}
-        addOpens={addOpen.thOpen}
+        
         day={"th"}
         openModal={(day) => openModal(day)}
         modalOpens={modalOpen.thModal}
       />
       <NoteForm
-        notesByDay={notesByDay.f}
+        
         Editnote={(note, day) => Editnote(note, day)}
-        deleteNote={(id, day) => deleteNote(id, day)}
-        AddNote={(title, body, day) => AddNote(title, body, day)}
+
         dayTitle={"Piątek"}
         openDay={"fOpen"}
-        openAdd={(day) => openAdd(day)}
-        addOpens={addOpen.fOpen}
+        
+       
         day={"f"}
         openModal={(day) => openModal(day)}
         modalOpens={modalOpen.fModal}
       />
       <NoteForm
-        notesByDay={notesByDay.s}
+        
         Editnote={(note, day) => Editnote(note, day)}
-        deleteNote={(id, day) => deleteNote(id, day)}
-        AddNote={(title, body, day) => AddNote(title, body, day)}
+
+     
         dayTitle={"Sobota"}
         openDay={"sOpen"}
-        openAdd={(day) => openAdd(day)}
-        addOpens={addOpen.sOpen}
+       
+        
         day={"s"}
         openModal={(day) => openModal(day)}
         modalOpens={modalOpen.sModal}
       />
       <NoteForm
-        notesByDay={notesByDay.su}
+        
         Editnote={(note, day) => Editnote(note, day)}
-        deleteNote={(id, day) => deleteNote(id, day)}
-        AddNote={(title, body, day) => AddNote(title, body, day)}
+        
+     
         dayTitle={"Niedziela"}
         openDay={"suOpen"}
-        openAdd={(day) => openAdd(day)}
-        addOpens={addOpen.suOpen}
+       
         day={"su"}
         openModal={(day) => openModal(day)}
         modalOpens={modalOpen.suModal}

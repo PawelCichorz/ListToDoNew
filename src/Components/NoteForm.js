@@ -3,7 +3,7 @@ import Note from "./Note";
 import Modal from "react-modal";
 import { useState ,useEffect } from "react";
 import EditNote from "./EditNote";
-import {  fetchNotesBackend,addNoteBackend} from "./backend"
+import {  fetchNotesBackend,addNoteBackend,deleteNoteBackend} from "./backend"
 
 
 
@@ -68,12 +68,7 @@ console.log(notesByDay.m)
   };
 
   //dodawanie notatki
-  // const AddNote = () => {
-  //   props.AddNote(titlem, descm, props.day);
-
-  //   Settitlem("");
-  //   Setdescm("");
-  // };
+  
 
 
   async function addNote() {
@@ -101,9 +96,21 @@ console.log(notesByDay.m)
     fetchNotes(props.day);
   }, []);
 
+//usuwanie notatek
+async function deleteNote(id,day) {
+  await deleteNoteBackend(id, day);
+  setNotesByDay((prevState) => ({
+    ...prevState,
+    [day]: prevState[day].filter((note) => note._id !== id),
+  }));
+
+}
+
+
+
   return (
     <div className="lolek">
-      {props.notesByDay ? (
+      {notesByDay ? (
         <>
           {" "}
           <div className="monday border">
@@ -128,7 +135,7 @@ console.log(notesByDay.m)
                 name={notatka.title}
                 description={notatka.body}
                 id={notatka._id}
-                deleteNote={(id, day) => props.deleteNote(id, day)}
+                deleteNote={(id, day) => deleteNote(id, day)}
                 EditNoteHandler={(note, day) => EditNoteHandler(note, day)}
                 day={props.day}
               />
