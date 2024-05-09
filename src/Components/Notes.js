@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import NoteForm from "./NoteForm";
-import { apiUrl } from './BackendPaths'
+import { apiUrl } from '../BackendPaths'
 
 function Notes(props) {
   //stan otwarcia się formularza do dodawania notatek
