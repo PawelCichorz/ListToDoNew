@@ -10,6 +10,29 @@ import {
   editNoteBackend,
 } from "./backend";
 
+
+  //wyłączenie modala buttonem anuluj
+  const ToglleModal = (setModalOpen) => {
+    setModalOpen(false)
+  };
+
+   //otwarcie inputów do dodawania notatki
+   const openAdd = (setAddOpen) => {
+    setAddOpen(true);
+  };
+
+   //pobieranie notatek
+ async function fetchNotes(setNotesByDay,day) {
+  const notes = await fetchNotesBackend(day);
+  setNotesByDay((prevState) => ({
+    ...prevState,
+    [day]: notes,
+  }));
+}
+  
+ 
+
+
 function NoteForm(props) {
   //edytowana notatka
   const [editNote, Seteditnote] = useState({});
@@ -32,27 +55,9 @@ function NoteForm(props) {
     su: [],
   });
 
-  console.log(notesByDay.m);
 
-  //wyłączenie modala buttonem anuluj
-  const ToglleModal = () => {
-    setModalOpen(false)
-  };
 
-  //funkcja otwierania modalu
-  // const openModal = (day) => {
-  //   setModalOpen((prevState) => ({
-  //     ...prevState,
-  //     [day + "Modal"]: !prevState[day + "Modal"],
-  //   }));
-  // };
-
-  //przycisk edytuj
-  const EditNoteHandler = (note) => {
-    setModalOpen(true);
-
-    Seteditnote(note);
-  };
+ 
 
   //style do modala
   const customStyles = {
@@ -66,35 +71,32 @@ function NoteForm(props) {
     },
   };
 
-  //otwarcie inputów do dodawania notatki
-  const openAdd = () => {
-    setAddOpen(true);
+ 
+
+   //przycisk edytuj
+   const EditNoteHandler = (note) => {
+    setModalOpen(true);
+    Seteditnote(note);
   };
 
-  //dodawanie notatki
+ //dodawanie notatki
 
-  async function addNote() {
-    const newNote = await addNoteBackend(titlem, descm, props.day);
-    setNotesByDay((prevState) => ({
-      ...prevState,
-      [props.day]: [...prevState[props.day], newNote],
-    }));
-    setAddOpen(!addOpen);
-    Settitlem("");
-    Setdescm("");
-  }
+ async function addNote() {
+  const newNote = await addNoteBackend(titlem, descm, props.day);
+  setNotesByDay((prevState) => ({
+    ...prevState,
+    [props.day]: [...prevState[props.day], newNote],
+  }));
+  setAddOpen(!addOpen);
+  Settitlem("");
+  Setdescm("");
+}
+ 
 
-  //pobieranie notatek
-  async function fetchNotes(day) {
-    const notes = await fetchNotesBackend(day);
-    setNotesByDay((prevState) => ({
-      ...prevState,
-      [day]: notes,
-    }));
-  }
+
 
   useEffect(() => {
-    fetchNotes(props.day);
+    fetchNotes(setNotesByDay,props.day);
   }, []);
 
   //usuwanie notatek
@@ -107,7 +109,6 @@ function NoteForm(props) {
   }
 
   //edytowanie
-
   async function Editnote(note, day) {
     const notes = [...notesByDay[day]];
     const index = notes.findIndex((x) => x._id === note._id);
@@ -119,7 +120,7 @@ function NoteForm(props) {
     }));
     setModalOpen(!modalOpen);
   }
-
+console.log(Seteditnote)
   return (
     <div className="lolek">
       {notesByDay ? (
@@ -138,7 +139,7 @@ function NoteForm(props) {
                 onEdit={(note, day) => Editnote(note, day)}
                 day={props.day}
               />
-              <button onClick={ToglleModal}>Anuluj</button>
+              <button onClick={() => ToglleModal(setModalOpen)}>Anuluj</button>
             </Modal>
             <p className="zada ">{props.dayTitle} </p>
             {notesByDay[props.day].map((notatka) => (
@@ -148,13 +149,13 @@ function NoteForm(props) {
                 description={notatka.body}
                 id={notatka._id}
                 deleteNote={(id, day) => deleteNote(id, day)}
-                EditNoteHandler={(note, day) => EditNoteHandler(note, day)}
+                EditNoteHandler={(note) => EditNoteHandler(note)}
                 day={props.day}
               />
             ))}
 
             <div className="addnote">
-              <button className="butt" onClick={() => openAdd()}>
+              <button className="butt" onClick={() => openAdd(setAddOpen)}>
                 Dodaj{" "}
               </button>
               {addOpen ? (
