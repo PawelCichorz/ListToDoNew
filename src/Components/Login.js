@@ -107,6 +107,7 @@ function Login(props) {
           name="email"
           value={email}
           onChange={(e) => Setemail(e.target.value)}
+          className="loginone"
         ></input>
       </div>
 
@@ -117,10 +118,11 @@ function Login(props) {
           name="password"
           value={password}
           onChange={(e) => Setpass(e.target.value)}
+          className="logintwo"
         ></input>
       </div>
       <p>{error}</p>
-      <button>ZALOGUJ</button>
+      <button className="buttonLogin">ZALOGUJ</button>
     </form>
   );
 }

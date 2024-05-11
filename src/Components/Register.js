@@ -74,6 +74,7 @@ function Register() {
           name="email"
           value={email}
           onChange={(e) => Setemail(e.target.value)}
+          className="inputone"
         ></input>
         <p>{error}</p>
       </div>
@@ -81,15 +82,16 @@ function Register() {
       <div className="password">
         <label> Hasło:</label>
         <input
-          type="Password"
+          type="password"
           name="password"
           value={password}
           onChange={(e) => Setpass(e.target.value)}
+          className="inputtwo"
         ></input>
         <p>{errop}</p>
       </div>
 
-      <button>ZAREJESTRUJ</button>
+      <button className="buttonregister">ZAREJESTRUJ</button>
     </form>
   );
 }

@@ -174,7 +174,7 @@ console.log(Seteditnote)
                     type="text"
                     onChange={(e) => Setdescm(e.target.value)}
                   ></input>
-                  <button onClick={() => addNote(props.day)}>Dodaj</button>
+                  <button onClick={() => addNote(props.day)} className="later">Dodaj</button>
                 </>
               ) : null}
             </div>
