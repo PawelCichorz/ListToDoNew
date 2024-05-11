@@ -14,9 +14,12 @@ function App() {
     setSession(user);
   }
   console.log(session);
+
+
   return (
     <Router>
       <div className="App">
+    
         <Routes>
           <Route
             exact={true}
