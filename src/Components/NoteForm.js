@@ -30,7 +30,6 @@ async function fetchNotes(dispatch, day) {
 function NoteForm(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  console.log(state.notesByDay.f, state.notesByDay.m);
   //style do modala
   const customStyles = {
     content: {
