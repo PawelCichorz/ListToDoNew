@@ -19,10 +19,7 @@ function Note(props) {
         >
           Edytuj
         </button>
-        <button
-          className="buttys"
-          onClick={() => props.deleteNote(props.id, props.day)}
-        >
+        <button className="buttys" onClick={() => props.deleteNote(props.id)}>
           Usuń
         </button>
       </div>

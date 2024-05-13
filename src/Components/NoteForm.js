@@ -13,18 +13,18 @@ import reducer, { initialState } from "../reducer";
 
 //wyłączenie modala buttonem anuluj
 const ToglleModal = (dispatch) => {
-  dispatch({ type: "addModal" });
+  dispatch({ type: "ADD_MODAL" });
 };
 
 //otwarcie inputów do dodawania notatki
 const openAdd = (dispatch) => {
-  dispatch({ type: "addNote" });
+  dispatch({ type: "ADD_NOTE" });
 };
 
 //pobieranie notatek
 async function fetchNotes(dispatch, day) {
   const notes = await fetchNotesBackend(day);
-  dispatch({ type: "fetchNotes", payload: { day, notes } });
+  dispatch({ type: "FETCH_NOTES", payload: { notes } });
 }
 
 function NoteForm(props) {
@@ -44,8 +44,8 @@ function NoteForm(props) {
 
   //przycisk edytuj
   const EditNoteHandler = (note) => {
-    dispatch({ type: "addModal" });
-    dispatch({ type: "setEditNote", payload: note });
+    dispatch({ type: "ADD_MODAL" });
+    dispatch({ type: "SET_EDITNOTE", payload: note });
   };
 
   //dodawanie notatki
@@ -54,40 +54,39 @@ function NoteForm(props) {
     const newNote = await addNoteBackend(state.titlem, state.descm, props.day);
 
     dispatch({
-      type: "setNotes",
+      type: "SET-NOTES",
       payload: {
-        day: props.day,
-        notes: [...state.notesByDay[props.day], newNote],
+        notes: [...state.notesDay, newNote], // Dodaj nową notatkę do aktualnych notatek
       },
     });
-    dispatch({ type: "addNote" });
-    dispatch({ type: "clearInputs" });
+    dispatch({ type: "ADD_NOTE" });
+    dispatch({ type: "CLEAR_INPUTS" });
   }
 
   useEffect(() => {
     fetchNotes(dispatch, props.day);
-  }, [state.notesByDay]);
+  }, [state.notesDay]);
 
   //usuwanie notatek
-  async function deleteNote(id, day) {
-    await deleteNoteBackend(id, day);
-    dispatch({ type: "deleteNote", payload: { id, day } });
+  async function deleteNote(id) {
+    await deleteNoteBackend(id, props.day);
+    dispatch({ type: "DELETE_NOTE", payload: { id } });
   }
 
   //edytowanie
-  async function Editnote(note, day) {
-    const notes = [...state.notesByDay[day]];
+  async function editNote(note) {
+    const notes = [...state.notesDay];
     const index = notes.findIndex((x) => x._id === note._id);
     notes[index] = note;
 
-    await editNoteBackend(note, day);
-    dispatch({ type: "addModal" });
-    dispatch({ type: "setNotes", payload: notes });
+    await editNoteBackend(note, props.day);
+    dispatch({ type: "ADD_MODAL" });
+    dispatch({ type: "SET_EDITNOTE", payload: notes });
   }
 
   return (
     <div className="lolek">
-      {state.notesByDay ? (
+      {state.notesDay ? (
         <>
           {" "}
           <div className="monday border">
@@ -100,22 +99,21 @@ function NoteForm(props) {
                 name={state.editNote.title}
                 description={state.editNote.body}
                 id={state.editNote._id}
-                onEdit={(note, day) => Editnote(note, day)}
+                onEdit={(note, day) => editNote(note, day)}
                 day={props.day}
               />
               <button onClick={() => ToglleModal(dispatch)}>Anuluj</button>
             </Modal>
             <p className="zada ">{props.dayTitle} </p>
-            {state.notesByDay[props.day].length > 0 &&
-              state.notesByDay[props.day].map((notatka) => (
+            {state.notesDay.length > 0 &&
+              state.notesDay.map((notatka) => (
                 <Note
                   key={notatka._id}
                   name={notatka.title}
                   description={notatka.body}
                   id={notatka._id}
-                  deleteNote={(id, day) => deleteNote(id, day)}
+                  deleteNote={(id) => deleteNote(id)}
                   EditNoteHandler={(note) => EditNoteHandler(note)}
-                  day={props.day}
                 />
               ))}
 
@@ -131,7 +129,7 @@ function NoteForm(props) {
                     value={state.titlem}
                     type="text"
                     onChange={(e) =>
-                      dispatch({ type: "setTitlem", payload: e.target.value })
+                      dispatch({ type: "SET_TITLE", payload: e.target.value })
                     }
                   ></input>
                   <label className="la">Opis:</label>
@@ -140,7 +138,7 @@ function NoteForm(props) {
                     value={state.descm}
                     type="text"
                     onChange={(e) =>
-                      dispatch({ type: "setDescm", payload: e.target.value })
+                      dispatch({ type: "SET_DESC", payload: e.target.value })
                     }
                   ></input>
                   <button onClick={() => addNote(props.day)} className="later">

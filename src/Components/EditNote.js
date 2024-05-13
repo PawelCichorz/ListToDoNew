@@ -13,7 +13,7 @@ function EditNote(props) {
       _id: props.id,
     };
 
-    props.onEdit(note, props.day);
+    props.onEdit(note);
   };
 
   return (

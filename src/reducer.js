@@ -1,14 +1,6 @@
 //state
 export const initialState = {
-  notesByDay: {
-    m: [],
-    t: [],
-    w: [],
-    th: [],
-    f: [],
-    s: [],
-    su: [],
-  },
+  notesDay: [],
   modalOpen: false,
   addOpen: false,
   descm: "",
@@ -21,43 +13,32 @@ console.log(initialState);
 //funkcja reducer
 const reducer = (state, action) => {
   switch (action.type) {
-    case "addModal":
+    case "ADD_MODAL":
       return { ...state, modalOpen: !state.modalOpen };
-    case "addNote":
+    case "ADD_NOTE":
       return { ...state, addOpen: !state.addOpen };
-    case "setTitlem":
+    case "SET_TITLE":
       return { ...state, titlem: action.payload };
-    case "setDescm":
+    case "SET_DESC":
       return { ...state, descm: action.payload };
-    case "setNotes":
+    case "SET-NOTES":
       return {
         ...state,
-        notesByDay: {
-          ...state.notesByDay,
-          [action.payload.day]: action.payload,
-        },
+        notesDay: action.payload.notes,
       };
-    case "clearInputs":
+    case "CLEAR_INPUTS":
       return { ...state, titlem: "", descm: "" };
-    case "deleteNote": {
-      const { id, day } = action.payload;
-      const updatedNotes = state.notesByDay[day].filter(
-        (note) => note._id !== id,
-      );
-      return {
-        ...state,
-        notesByDay: { ...state.notesByDay, [day]: updatedNotes },
-      };
+    case "DELETE_NOTE": {
+      const { id } = action.payload;
+      const updatedNotes = state.notesDay.filter((note) => note._id !== id);
+      return { ...state, notesDay: updatedNotes };
     }
-    case "setEditNote":
+    case "SET_EDITNOTE":
       return { ...state, editNote: action.payload };
-    case "fetchNotes":
+    case "FETCH_NOTES":
       return {
         ...state,
-        notesByDay: {
-          ...state.notesByDay,
-          [action.payload.day]: action.payload.notes,
-        },
+        notesDay: action.payload.notes,
       };
   }
 };
