@@ -7,7 +7,7 @@
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended",
-        "prettier"
+        "plugin:prettier/recommended"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -17,7 +17,7 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react","cypress"
+        "react","cypress","prettier"
     ],
     "rules": {
         "react/prop-types":"off"
