@@ -38,7 +38,7 @@ const reducer = (state, action) => {
     case "FETCH_NOTES":
       return {
         ...state,
-        notesDay: action.payload.notes,
+        notesDay: action.payload,
       };
   }
 };

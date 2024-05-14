@@ -24,7 +24,7 @@ const openAdd = (dispatch) => {
 //pobieranie notatek
 async function fetchNotes(dispatch, day) {
   const notes = await fetchNotesBackend(day);
-  dispatch({ type: "FETCH_NOTES", payload: { notes } });
+  dispatch({ type: "FETCH_NOTES", payload: notes });
 }
 
 function NoteForm(props) {
@@ -49,7 +49,6 @@ function NoteForm(props) {
   };
 
   //dodawanie notatki
-
   async function addNote() {
     const newNote = await addNoteBackend(state.titlem, state.descm, props.day);
 
@@ -119,7 +118,7 @@ function NoteForm(props) {
 
             <div className="addnote">
               <button className="butt" onClick={() => openAdd(dispatch)}>
-                Dodaj{" "}
+                Dodaj
               </button>
               {state.addOpen ? (
                 <>
