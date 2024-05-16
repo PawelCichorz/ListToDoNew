@@ -11,26 +11,14 @@ import {
 } from "../backend";
 import reducer, { initialState } from "../reducer";
 
-//wyłączenie modala buttonem anuluj
-const ToglleModal = (dispatch) => {
-  dispatch({ type: "ADD_MODAL" });
-};
-
-//otwarcie inputów do dodawania notatki
-const openAdd = (dispatch) => {
-  dispatch({ type: "ADD_NOTE" });
-};
-
-//pobieranie notatek
 async function fetchNotes(dispatch, day) {
   const notes = await fetchNotesBackend(day);
-  dispatch({ type: "FETCH_NOTES", payload: notes });
+  dispatch({ type: "UPDATE_NOTES", payload: notes });
 }
 
 function NoteForm(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  //style do modala
   const customStyles = {
     content: {
       height: "350px",
@@ -42,44 +30,39 @@ function NoteForm(props) {
     },
   };
 
-  //przycisk edytuj
   const EditNoteHandler = (note) => {
-    dispatch({ type: "ADD_MODAL" });
+    dispatch({ type: "TOGLLE_MODAL" });
     dispatch({ type: "SET_EDITNOTE", payload: note });
   };
 
-  //dodawanie notatki
   async function addNote() {
     const newNote = await addNoteBackend(state.titlem, state.descm, props.day);
 
     dispatch({
       type: "SET-NOTES",
-      payload: {
-        notes: [...state.notesDay, newNote], // Dodaj nową notatkę do aktualnych notatek
-      },
+      payload: [state.notesDay, newNote],
     });
-    dispatch({ type: "ADD_NOTE" });
-    dispatch({ type: "CLEAR_INPUTS" });
+    dispatch({ type: "ADD_NOTE", payload: false });
   }
 
   useEffect(() => {
     fetchNotes(dispatch, props.day);
   }, [state.notesDay]);
 
-  //usuwanie notatek
   async function deleteNote(id) {
     await deleteNoteBackend(id, props.day);
     dispatch({ type: "DELETE_NOTE", payload: { id } });
   }
 
-  //edytowanie
   async function editNote(note) {
-    const notes = [...state.notesDay];
-    const index = notes.findIndex((x) => x._id === note._id);
-    notes[index] = note;
-
-    await editNoteBackend(note, props.day);
-    dispatch({ type: "ADD_MODAL" });
+    // const notes = [...state.notesDay];
+    // const index = notes.findIndex((x) => x._id === note._id);
+    // notes[index] = note;
+    const updatedNote = await editNoteBackend(note, props.day);
+    const notes = state.notesDay.map((x) =>
+      x._d === note._id ? updatedNote : note,
+    );
+    dispatch({ type: "TOGLLE_MODAL" });
     dispatch({ type: "SET_EDITNOTE", payload: notes });
   }
 
@@ -101,7 +84,13 @@ function NoteForm(props) {
                 onEdit={(note, day) => editNote(note, day)}
                 day={props.day}
               />
-              <button onClick={() => ToglleModal(dispatch)}>Anuluj</button>
+              <button
+                onClick={() => {
+                  dispatch({ type: "TOOGLE_MODAL" });
+                }}
+              >
+                Anuluj
+              </button>
             </Modal>
             <p className="zada ">{props.dayTitle} </p>
             {state.notesDay.length > 0 &&
@@ -117,7 +106,12 @@ function NoteForm(props) {
               ))}
 
             <div className="addnote">
-              <button className="butt" onClick={() => openAdd(dispatch)}>
+              <button
+                className="butt"
+                onClick={() => {
+                  dispatch({ type: "ADD_NOTE", payload: !state.addOpen });
+                }}
+              >
                 Dodaj
               </button>
               {state.addOpen ? (

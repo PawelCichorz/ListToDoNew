@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { apiUrl } from './BackendPaths';
+import axios from "axios";
+import { apiUrl } from "./BackendPaths";
 
 export async function fetchNotesBackend(day) {
   const res = await axios.get(apiUrl + day);
