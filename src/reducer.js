@@ -7,8 +7,6 @@ export const initialState = {
   editNote: {},
 };
 
-console.log(initialState);
-
 const reducer = (state, action) => {
   switch (action.type) {
     case "TOGLLE_MODAL":
