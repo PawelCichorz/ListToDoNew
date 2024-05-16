@@ -1,5 +1,5 @@
 import React from "react";
-import Note from "./Note";
+import "./noteform.css";
 import Modal from "react-modal";
 import { useEffect, useReducer } from "react";
 import EditNote from "./EditNote";
@@ -55,9 +55,6 @@ function NoteForm(props) {
   }
 
   async function editNote(note) {
-    // const notes = [...state.notesDay];
-    // const index = notes.findIndex((x) => x._id === note._id);
-    // notes[index] = note;
     const updatedNote = await editNoteBackend(note, props.day);
     const notes = state.notesDay.map((x) =>
       x._d === note._id ? updatedNote : note,
@@ -95,14 +92,33 @@ function NoteForm(props) {
             <p className="zada ">{props.dayTitle} </p>
             {state.notesDay.length > 0 &&
               state.notesDay.map((notatka) => (
-                <Note
-                  key={notatka._id}
-                  name={notatka.title}
-                  description={notatka.body}
-                  id={notatka._id}
-                  deleteNote={(id) => deleteNote(id)}
-                  EditNoteHandler={(note) => EditNoteHandler(note)}
-                />
+                // <Note
+                //   key={notatka._id}
+                //   name={notatka.title}
+                //   description={notatka.body}
+                //   id={notatka._id}
+                //   deleteNote={(id) => deleteNote(id)}
+                //   EditNoteHandler={(note) => EditNoteHandler(note)}
+                // />
+
+                <div className="notesmain" key={notatka._id}>
+                  <p className="zad">Godzina: {notatka.title} </p>
+                  <p className="zad">Opis: {notatka.body}</p>
+                  <div className="buttony">
+                    <button
+                      className="butty"
+                      onClick={() => EditNoteHandler(notatka)}
+                    >
+                      Edytuj
+                    </button>
+                    <button
+                      className="buttys"
+                      onClick={() => deleteNote(notatka._id)}
+                    >
+                      Usuń
+                    </button>
+                  </div>
+                </div>
               ))}
 
             <div className="addnote">
