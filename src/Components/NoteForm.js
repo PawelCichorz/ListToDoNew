@@ -2,7 +2,6 @@ import React from "react";
 import "./noteform.css";
 import Modal from "react-modal";
 import { useEffect, useReducer } from "react";
-// import EditNote from "./EditNote";
 import {
   fetchNotesBackend,
   addNoteBackend,

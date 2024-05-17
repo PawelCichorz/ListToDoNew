@@ -27,12 +27,7 @@ function Login(props) {
   }
 
   return (
-    <form
-      className="form"
-      method="POST"
-      onSubmit={handleSubmitL}
-      //    action='http://localhost:3001/logowanie'
-    >
+    <form className="form" method="POST" onSubmit={handleSubmitL}>
       <div className="email">
         <label> Email:</label>
         <input

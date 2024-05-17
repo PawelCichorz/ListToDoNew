@@ -52,7 +52,6 @@ function Register() {
   }, [password]);
 
   async function handleSubmit(e) {
-    // Zapobiegaj domyślnej akcji formularza
     e.preventDefault();
     try {
       await axios.post("http://localhost:3031/zarejestruj", {
@@ -62,7 +61,6 @@ function Register() {
       history("/logowanie");
     } catch (error) {
       console.error("Błąd podczas rejestracji:", error);
-      // Tutaj możesz obsłużyć błędy rejestracji
     }
   }
   return (

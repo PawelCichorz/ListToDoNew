@@ -9,8 +9,6 @@ import NoteForm from "./NoteForm";
 function Notes(props) {
   const history = useNavigate();
 
-  //inne funkcje
-
   const logOut = () => {
     const setSession = props.setSession;
     setSession(null);
