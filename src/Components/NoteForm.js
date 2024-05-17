@@ -26,7 +26,7 @@ function NoteForm(props) {
   };
 
   const EditNoteHandler = (note) => {
-    dispatch({ type: "SET_EDIT_NOTE" });
+    dispatch({ type: "SET_MODAL_OPEN" });
     dispatch({ type: "SET_EDITNOTE", payload: note });
   };
 
@@ -62,7 +62,7 @@ function NoteForm(props) {
     };
     await editNoteBackend(updatedNote, props.day);
     dispatch({ type: "UPDATE_NOTE", payload: updatedNote });
-    dispatch({ type: "SET_EDIT_NOTE" });
+    dispatch({ type: "SET_MODAL_OPEN" });
   };
 
   return (
