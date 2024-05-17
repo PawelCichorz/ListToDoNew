@@ -2,9 +2,11 @@ export const initialState = {
   notesDay: [],
   modalOpen: false,
   addOpen: false,
-  descm: "",
-  titlem: "",
+  desc: "",
+  title: "",
   editNote: {},
+  editNoteTitle: "",
+  editNoteDesc: "",
 };
 
 const reducer = (state, action) => {
@@ -12,15 +14,15 @@ const reducer = (state, action) => {
     case "TOGLLE_MODAL":
       return { ...state, modalOpen: !state.modalOpen };
     case "ADD_NOTE":
-      return { ...state, addOpen: action.payload, titlem: "", descm: "" };
+      return { ...state, addOpen: action.payload, title: "", desc: "" };
     case "SET_TITLE":
-      return { ...state, titlem: action.payload };
+      return { ...state, title: action.payload };
     case "SET_DESC":
-      return { ...state, descm: action.payload };
-    case "SET-NOTES":
+      return { ...state, desc: action.payload };
+    case "SET_NOTES":
       return {
         ...state,
-        notesDay: action.payload,
+        notesDay: [...state.notesDay, action.payload],
       };
     case "DELETE_NOTE": {
       const { id } = action.payload;
@@ -28,12 +30,32 @@ const reducer = (state, action) => {
       return { ...state, notesDay: updatedNotes };
     }
     case "SET_EDITNOTE":
-      return { ...state, editNote: action.payload };
-    case "UPDATE_NOTES":
+      return {
+        ...state,
+        editNote: action.payload,
+        editNoteTitle: action.payload.title,
+        editNoteDesc: action.payload.body,
+      };
+    case "FETCH_NOTES":
       return {
         ...state,
         notesDay: action.payload,
       };
+    case "SET_EDITNOTE_TITLE": {
+      return { ...state, editNoteTitle: action.payload };
+    }
+    case "SET_EDITNOTE_DESC": {
+      return { ...state, editNoteDesc: action.payload };
+    }
+    case "UPDATE_NOTE": {
+      const updatedNotes = state.notesDay.map((note) =>
+        note._id === action.payload._id ? action.payload : note,
+      );
+      return {
+        ...state,
+        notesDay: updatedNotes,
+      };
+    }
   }
 };
 export default reducer;
