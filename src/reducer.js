@@ -11,7 +11,7 @@ export const initialState = {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "TOGLLE_MODAL":
+    case "SET_MODAL_OPEN":
       return { ...state, modalOpen: !state.modalOpen };
     case "ADD_NOTE":
       return { ...state, addOpen: action.payload, title: "", desc: "" };

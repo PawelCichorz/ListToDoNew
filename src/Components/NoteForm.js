@@ -26,7 +26,7 @@ function NoteForm(props) {
   };
 
   const EditNoteHandler = (note) => {
-    dispatch({ type: "TOGLLE_MODAL" });
+    dispatch({ type: "SET_EDIT_NOTE" });
     dispatch({ type: "SET_EDITNOTE", payload: note });
   };
 
@@ -62,14 +62,11 @@ function NoteForm(props) {
     };
     await editNoteBackend(updatedNote, props.day);
     dispatch({ type: "UPDATE_NOTE", payload: updatedNote });
-    dispatch({ type: "TOGLLE_MODAL" });
+    dispatch({ type: "SET_EDIT_NOTE" });
   };
 
   return (
     <div className="lolek">
-      {/* {state.notesDay ? (
-        <> */}
-
       <div className="monday border">
         <Modal
           isOpen={state.modalOpen}
@@ -171,8 +168,6 @@ function NoteForm(props) {
           ) : null}
         </div>
       </div>
-      {/* </>
-      ) : null} */}
     </div>
   );
 }
