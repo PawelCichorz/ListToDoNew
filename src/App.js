@@ -4,12 +4,17 @@ import Notes from "./Components/Notes";
 import Register from "./Components/Register";
 import Main from "./Components/Main";
 import Login from "./Components/Login";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useHistory,
+} from "react-router-dom";
 import { useState } from "react";
 
 function App() {
   const [session, setSession] = useState(null);
-
+  const history = useHistory();
   function handleLoginSuccess(user) {
     setSession(user);
   }
@@ -40,7 +45,13 @@ function App() {
           <Route
             exact={true}
             path="/notes"
-            element={<Notes setSession={setSession} session={session} />}
+            element={
+              <Notes
+                setSession={setSession}
+                session={session}
+                history={history}
+              />
+            }
           ></Route>
         </Routes>
       </div>

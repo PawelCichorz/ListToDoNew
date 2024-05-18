@@ -3,7 +3,7 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom";
-import Modal from "react-modal";
+import Modal from "react-modal"; // Upewnij się, że importujesz Modal z react-modal
 
 // Create a root element for modal
 const root = document.createElement("div");
