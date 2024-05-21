@@ -6,11 +6,14 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import NoteForm from "./NoteForm";
 
-function Notes(props) {
+type NotesProps = {
+  setSession: (session: string | null) => void;
+};
+
+const Notes: React.FC<NotesProps> = ({ setSession }) => {
   const history = useNavigate();
 
   const logOut = () => {
-    const setSession = props.setSession;
     setSession(null);
     history("/");
   };
@@ -28,6 +31,6 @@ function Notes(props) {
       <button onClick={logOut}>Wyloguj</button>
     </div>
   );
-}
+};
 
 export default Notes;
