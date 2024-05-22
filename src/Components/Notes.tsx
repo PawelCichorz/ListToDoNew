@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import NoteForm from "./NoteForm";
 
 type NotesProps = {
-  setSession: (session: string | null) => void;
+  setSession: (session: any) => void;
 };
 
 const Notes: React.FC<NotesProps> = ({ setSession }) => {

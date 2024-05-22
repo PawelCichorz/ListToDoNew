@@ -1,4 +1,21 @@
-export const initialState = {
+export interface Note {
+  _id: string;
+  title: string;
+  body: string;
+}
+
+export interface State {
+  notesDay: Note[];
+  modalOpen: boolean;
+  addOpen: boolean;
+  desc: string;
+  title: string;
+  editNote: Note | any;
+  editNoteTitle: string;
+  editNoteDesc: string;
+}
+
+export const initialState: State = {
   notesDay: [],
   modalOpen: false,
   addOpen: false,
@@ -9,7 +26,20 @@ export const initialState = {
   editNoteDesc: "",
 };
 
-const reducer = (state, action) => {
+export type Action =
+  | { type: "SET_MODAL_OPEN" }
+  | { type: "ADD_NOTE"; payload: boolean }
+  | { type: "SET_TITLE"; payload: string }
+  | { type: "SET_DESC"; payload: string }
+  | { type: "SET_NOTES"; payload: Note }
+  | { type: "DELETE_NOTE"; payload: { id: string } }
+  | { type: "SET_EDITNOTE"; payload: Note }
+  | { type: "FETCH_NOTES"; payload: Note[] }
+  | { type: "SET_EDITNOTE_TITLE"; payload: string }
+  | { type: "SET_EDITNOTE_DESC"; payload: string }
+  | { type: "UPDATE_NOTE"; payload: Note };
+
+const reducer = (state: State, action: Action) => {
   switch (action.type) {
     case "SET_MODAL_OPEN":
       return { ...state, modalOpen: !state.modalOpen };

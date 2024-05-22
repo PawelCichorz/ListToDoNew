@@ -1,24 +1,24 @@
 import "./register.css";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 
 function Register() {
   const history = useNavigate();
-  const [email, Setemail] = useState("");
-  const [password, Setpass] = useState("");
-  const [error, Seterror] = useState("");
-  const [errop, Seterrop] = useState("");
+  const [email, Setemail] = useState<string>("");
+  const [password, Setpass] = useState<string>("");
+  const [error, Seterror] = useState<string>("");
+  const [errop, Seterrop] = useState<string>("");
 
   // const auth =useContext(authContex)
 
-  const emailValidate = (text) => {
+  const emailValidate = (text: string) => {
     const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/g;
     return re.test(text);
   };
 
-  const passwordValidate = (text) => {
+  const passwordValidate = (text: string) => {
     const low = /[a-z]/g;
     const row = /[A-Z]/g;
     const nums = /[1-9]/g;
@@ -51,7 +51,7 @@ function Register() {
     }
   }, [password]);
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     try {
       await axios.post("http://localhost:3031/zarejestruj", {

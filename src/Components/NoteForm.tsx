@@ -10,7 +10,19 @@ import {
 } from "../backend";
 import reducer, { initialState } from "../reducer";
 Modal.setAppElement("#root");
-function NoteForm(props) {
+
+interface NoteFormProps {
+  day: string;
+  dayTitle: string;
+}
+
+interface Note {
+  _id: string;
+  title: string;
+  body: string;
+}
+
+function NoteForm(props: NoteFormProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const customStyles = {
@@ -24,7 +36,7 @@ function NoteForm(props) {
     },
   };
 
-  const EditNoteHandler = (note) => {
+  const EditNoteHandler = (note: Note) => {
     dispatch({ type: "SET_MODAL_OPEN" });
     dispatch({ type: "SET_EDITNOTE", payload: note });
   };
@@ -45,10 +57,10 @@ function NoteForm(props) {
   }
 
   useEffect(() => {
-    fetchNotes(props.day);
+    fetchNotes();
   }, []);
 
-  async function deleteNote(id) {
+  async function deleteNote(id: string) {
     await deleteNoteBackend(id, props.day);
     dispatch({ type: "DELETE_NOTE", payload: { id } });
   }
@@ -59,6 +71,7 @@ function NoteForm(props) {
       title: state.editNoteTitle,
       body: state.editNoteDesc,
     };
+    console.log(state.editNote);
     await editNoteBackend(updatedNote, props.day);
     dispatch({ type: "UPDATE_NOTE", payload: updatedNote });
     dispatch({ type: "SET_MODAL_OPEN" });
@@ -103,7 +116,7 @@ function NoteForm(props) {
 
           <button
             onClick={() => {
-              dispatch({ type: "TOOGLE_MODAL" });
+              dispatch({ type: "SET_MODAL_OPEN" });
             }}
           >
             Anuluj{" "}

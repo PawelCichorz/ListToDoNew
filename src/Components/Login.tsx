@@ -1,16 +1,20 @@
 import "./login.css";
 import axios from "axios";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 
-function Login(props) {
-  const history = useNavigate();
-  const [email, Setemail] = useState("");
-  const [password, Setpass] = useState("");
-  const [error, Seterror] = useState("");
+interface LoginProps {
+  onLoginSuccess: (data: any) => void;
+}
 
-  async function handleSubmitL(e) {
+function Login(props: LoginProps) {
+  const history = useNavigate();
+  const [email, Setemail] = useState<string>("");
+  const [password, Setpass] = useState<string>("");
+  const [error, Seterror] = useState<string>("");
+
+  async function handleSubmitL(e: FormEvent) {
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:3031/logowanie", {
@@ -20,7 +24,7 @@ function Login(props) {
       props.onLoginSuccess(response.config.data);
       console.log(response.config.data);
       history("/notes");
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.message);
       Seterror("Nieprawidłowy email lub hasło");
     }

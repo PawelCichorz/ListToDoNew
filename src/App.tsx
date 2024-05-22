@@ -10,43 +10,24 @@ import { useState } from "react";
 function App() {
   const [session, setSession] = useState(null);
 
-  function handleLoginSuccess(user) {
+  function handleLoginSuccess(user: any) {
     setSession(user);
   }
-  console.log(session);
 
   return (
     <Router>
       <div className="App">
         <Routes>
-          <Route
-            exact={true}
-            path="/"
-            element={<Main session={session} />}
-          ></Route>
-          <Route
-            exact={true}
-            path={`/rejestracja`}
-            element={<Register />}
-          ></Route>
+          <Route path="/" element={<Main session={session} />}></Route>
+          <Route path={`/rejestracja`} element={<Register />}></Route>
 
           <Route
-            exact={true}
             path={`/logowanie`}
-            element={
-              <Login onLoginSuccess={handleLoginSuccess} session={session} />
-            }
+            element={<Login onLoginSuccess={handleLoginSuccess} />}
           ></Route>
           <Route
-            exact={true}
             path="/notes"
-            element={
-              <Notes
-                setSession={setSession}
-                session={session}
-                history={history}
-              />
-            }
+            element={<Notes setSession={setSession} />}
           ></Route>
         </Routes>
       </div>

@@ -21,6 +21,7 @@
   },
   "plugins": ["react", "cypress", "prettier"],
   "rules": {
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }
