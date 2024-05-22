@@ -1,6 +1,6 @@
 import React from "react";
 import "./noteform.css";
-import Modal from "react-modal";
+
 import { useEffect, useReducer } from "react";
 import {
   fetchNotesBackend,
@@ -9,7 +9,6 @@ import {
   editNoteBackend,
 } from "../backend";
 import reducer, { initialState } from "../reducer";
-Modal.setAppElement("#root");
 
 interface NoteFormProps {
   day: string;
@@ -25,20 +24,19 @@ interface Note {
 function NoteForm(props: NoteFormProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const customStyles = {
-    content: {
-      height: "350px",
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      transform: "translate(-50%, -50%)",
-    },
-  };
-
   const EditNoteHandler = (note: Note) => {
     dispatch({ type: "SET_MODAL_OPEN" });
+    dispatch({ type: "SET_IS_EDITING", payload: true });
     dispatch({ type: "SET_EDITNOTE", payload: note });
+  };
+
+  const AddNoteHandler = () => {
+    dispatch({ type: "SET_MODAL_OPEN" });
+    dispatch({ type: "SET_IS_EDITING", payload: false });
+    dispatch({
+      type: "SET_EDITNOTE",
+      payload: { _id: "", title: "", body: "" },
+    });
   };
 
   async function addNote() {
@@ -48,7 +46,8 @@ function NoteForm(props: NoteFormProps) {
       type: "SET_NOTES",
       payload: newNote,
     });
-    dispatch({ type: "ADD_NOTE", payload: false });
+    dispatch({ type: "SET_MODAL_OPEN" });
+    dispatch({ type: "CLEAR_INPUT" });
   }
 
   async function fetchNotes() {
@@ -77,14 +76,21 @@ function NoteForm(props: NoteFormProps) {
     dispatch({ type: "SET_MODAL_OPEN" });
   };
 
+  const saveNote = async () => {
+    if (state.isEditing) {
+      await editNote();
+    } else {
+      await addNote();
+    }
+  };
+
   return (
     <div className="lolek">
-      <div className="monday border">
-        <Modal
-          isOpen={state.modalOpen}
-          contentLabel="Edytuj Notatkę"
-          style={customStyles}
-        >
+      <div
+        className="modal"
+        style={{ display: state.modalOpen ? "flex" : "none" }}
+      >
+        {state.isEditing ? (
           <div className="notesmaine">
             <label>Tytuł:</label>
 
@@ -111,17 +117,45 @@ function NoteForm(props: NoteFormProps) {
                 })
               }
             ></input>
-            <button onClick={editNote}>Zapisz</button>
+            <button className="button2" onClick={saveNote}>
+              {state.isEditing ? "Zapisz" : "Dodaj"}
+            </button>
+            <button
+              className="button1"
+              onClick={() => {
+                dispatch({ type: "SET_MODAL_OPEN" });
+              }}
+            >
+              Anuluj{" "}
+            </button>
           </div>
-
-          <button
-            onClick={() => {
-              dispatch({ type: "SET_MODAL_OPEN" });
-            }}
-          >
-            Anuluj{" "}
-          </button>
-        </Modal>
+        ) : (
+          <>
+            <label className="la">Godzina:</label>
+            <input
+              className="la"
+              value={state.title}
+              type="text"
+              onChange={(e) =>
+                dispatch({ type: "SET_TITLE", payload: e.target.value })
+              }
+            ></input>
+            <label className="la">Opis:</label>
+            <input
+              className="la"
+              value={state.desc}
+              type="text"
+              onChange={(e) =>
+                dispatch({ type: "SET_DESC", payload: e.target.value })
+              }
+            ></input>
+            <button onClick={() => addNote()} className="later">
+              Dodaj
+            </button>
+          </>
+        )}
+      </div>
+      <div className="monday border">
         <p className="zada ">{props.dayTitle} </p>
         {state.notesDay.map((notatka) => (
           <div className="notesmain" key={notatka._id}>
@@ -148,36 +182,11 @@ function NoteForm(props: NoteFormProps) {
           <button
             className="butt"
             onClick={() => {
-              dispatch({ type: "ADD_NOTE", payload: !state.addOpen });
+              AddNoteHandler();
             }}
           >
             Dodaj
           </button>
-          {state.addOpen ? (
-            <>
-              <label className="la">Godzina:</label>
-              <input
-                className="la"
-                value={state.title}
-                type="text"
-                onChange={(e) =>
-                  dispatch({ type: "SET_TITLE", payload: e.target.value })
-                }
-              ></input>
-              <label className="la">Opis:</label>
-              <input
-                className="la"
-                value={state.desc}
-                type="text"
-                onChange={(e) =>
-                  dispatch({ type: "SET_DESC", payload: e.target.value })
-                }
-              ></input>
-              <button onClick={() => addNote()} className="later">
-                Dodaj
-              </button>
-            </>
-          ) : null}
         </div>
       </div>
     </div>
