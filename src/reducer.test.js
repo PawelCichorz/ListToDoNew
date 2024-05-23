@@ -1,4 +1,4 @@
-import reducer, { initialState } from "./reducer";
+import reducer, { initialState } from "./Components/reducerNotes";
 
 describe("reducer", () => {
   it("should return the initial state", () => {
