@@ -29,7 +29,7 @@ function Notes(props: NotesProps) {
     dispatch({ type: "FETCH_NOTES", payload: notes });
   }
 
-  const AddNoteHandler = () => {
+  const openModaltoAdd = () => {
     dispatch({ type: "SET_MODAL_OPEN" });
 
     dispatch({ type: "SET_IS_EDITING", payload: false });
@@ -116,7 +116,7 @@ function Notes(props: NotesProps) {
         />
         <NotesList
           dayTitle={props.dayTitle}
-          AddNoteHandler={() => AddNoteHandler()}
+          AddNoteHandler={() => openModaltoAdd()}
           deleteNote={(id: string) => deleteNote(id)}
           openModal={(note: Note) => openModalToEdit(note)}
           fetchNotes={() => fetchNotes()}
