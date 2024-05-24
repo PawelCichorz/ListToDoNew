@@ -1,8 +1,23 @@
-import "./main.css";
 import { Link } from "react-router-dom";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+`;
+
+const Button = styled.button`
+  background-color: grey;
+  border-radius: 8px;
+  padding: 7px 13px;
+  margin: 10px;
+`;
 interface MainProps {
   session: any;
 }
@@ -15,11 +30,11 @@ function Main(props: MainProps) {
   };
 
   return (
-    <div className="mainDiv">
+    <Container>
       {session ? (
         <>
           <div> Jesteś Zalogowany</div>
-          <button onClick={goAhead}>Przejdz do notatek</button>
+          <Button onClick={goAhead}>Przejdz do notatek</Button>
         </>
       ) : (
         <>
@@ -31,7 +46,7 @@ function Main(props: MainProps) {
           </Link>
         </>
       )}
-    </div>
+    </Container>
   );
 }
 

@@ -6,9 +6,23 @@ import Main from "./Components/Main";
 import Login from "./Components/Login";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
+import styled from "styled-components";
 import { Routes, Route } from "react-router-dom";
 import { useState } from "react";
+
+const Div = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+`;
+const Button = styled.button`
+  background-color: grey;
+  border-radius: 8px;
+  padding: 7px 13px;
+  margin-top: 5px;
+`;
 
 function App() {
   const [session, setSession] = useState(null);
@@ -43,8 +57,10 @@ function App() {
               <Notes day={"th"} dayTitle={"Piątek"} />
               <Notes day={"s"} dayTitle={"Sobota"} />
               <Notes day={"su"} dayTitle={"Niedziela"} />
-              <Link to={"/"}>Cofnij</Link>
-              <button onClick={logOut}>Wyloguj</button>
+              <Div>
+                <Link to={"/"}>Cofnij</Link>
+                <Button onClick={logOut}>Wyloguj</Button>
+              </Div>
             </>
           }
         ></Route>

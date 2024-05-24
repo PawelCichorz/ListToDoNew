@@ -1,8 +1,35 @@
-import "./register.css";
 import axios from "axios";
 import { useState, useEffect, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import styled from "styled-components";
+
+const Container = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px;
+`;
+
+const EmailDiv = styled.div`
+  margin-bottom: 20px;
+`;
+const PasswordDiv = styled.div`
+  margin-bottom: 20px;
+`;
+
+const Input = styled.input`
+  font-size: 15px;
+  padding: 10px 25px;
+  margin-left: 8px;
+`;
+
+const Button = styled.button`
+  background-color: grey;
+  border-radius: 8px;
+  padding: 7px 13px;
+`;
 
 function Register() {
   const history = useNavigate();
@@ -10,8 +37,6 @@ function Register() {
   const [password, Setpass] = useState<string>("");
   const [error, Seterror] = useState<string>("");
   const [errop, Seterrop] = useState<string>("");
-
-  // const auth =useContext(authContex)
 
   const emailValidate = (text: string) => {
     const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/g;
@@ -64,33 +89,33 @@ function Register() {
     }
   }
   return (
-    <form className="form" method="POST" onSubmit={handleSubmit}>
-      <div className="email">
+    <Container className="form" method="POST" onSubmit={handleSubmit}>
+      <EmailDiv className="email">
         <label> Email:</label>
-        <input
+        <Input
           type="email"
           name="email"
           value={email}
           onChange={(e) => Setemail(e.target.value)}
           className="inputone"
-        ></input>
+        ></Input>
         <p>{error}</p>
-      </div>
+      </EmailDiv>
 
-      <div className="password">
+      <PasswordDiv className="password">
         <label> Hasło:</label>
-        <input
+        <Input
           type="password"
           name="password"
           value={password}
           onChange={(e) => Setpass(e.target.value)}
           className="inputtwo"
-        ></input>
+        ></Input>
         <p>{errop}</p>
-      </div>
+      </PasswordDiv>
 
-      <button className="buttonregister">ZAREJESTRUJ</button>
-    </form>
+      <Button>ZAREJESTRUJ</Button>
+    </Container>
   );
 }
 

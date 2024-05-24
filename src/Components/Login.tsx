@@ -1,8 +1,35 @@
-import "./login.css";
 import axios from "axios";
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import styled from "styled-components";
+
+const Container = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px;
+`;
+
+const EmailDiv = styled.div`
+  margin-bottom: 20px;
+`;
+const PasswordDiv = styled.div`
+  margin-bottom: 20px;
+`;
+
+const Input = styled.input`
+  font-size: 15px;
+  padding: 10px 25px;
+  margin-left: 8px;
+`;
+
+const Button = styled.button`
+  background-color: grey;
+  border-radius: 8px;
+  padding: 7px 13px;
+`;
 
 interface LoginProps {
   onLoginSuccess: (data: any) => void;
@@ -31,31 +58,29 @@ function Login(props: LoginProps) {
   }
 
   return (
-    <form className="form" method="POST" onSubmit={handleSubmitL}>
-      <div className="email">
+    <Container method="POST" onSubmit={handleSubmitL}>
+      <EmailDiv>
         <label> Email:</label>
-        <input
+        <Input
           type="email"
           name="email"
           value={email}
           onChange={(e) => Setemail(e.target.value)}
-          className="loginone"
-        ></input>
-      </div>
+        ></Input>
+      </EmailDiv>
 
-      <div className="password">
+      <PasswordDiv className="password">
         <label> Hasło:</label>
-        <input
+        <Input
           type="Password"
           name="password"
           value={password}
           onChange={(e) => Setpass(e.target.value)}
-          className="logintwo"
-        ></input>
-      </div>
+        ></Input>
+      </PasswordDiv>
       <p>{error}</p>
-      <button className="buttonLogin">ZALOGUJ</button>
-    </form>
+      <Button>ZALOGUJ</Button>
+    </Container>
   );
 }
 

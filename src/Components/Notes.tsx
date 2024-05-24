@@ -8,7 +8,15 @@ import {
   fetchNotesBackend,
 } from "../backend";
 import reducer, { initialState } from "./reducerNotes";
-import "./Notes.css";
+import styled from "styled-components";
+
+const Container = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
 
 type NotesProps = {
   day: string;
@@ -72,58 +80,54 @@ function Notes(props: NotesProps) {
     });
   };
 
-  console.log(state.modalOpen);
-
   return (
-    <div>
-      <div className="lolek">
-        <NoteForm
-          isOpen={state.modalOpen}
-          isEditing={state.isEditing}
-          note={state.editNote}
-          editNote={editNote}
-          closeModal={() => dispatch({ type: "SET_MODAL_OPEN" })}
-          addNote={() => addNote()}
-          modalOpen={state.modalOpen}
-          editNoteTitle={state.editNoteTitle}
-          editNoteDesc={state.editNoteDesc}
-          setEditNoteTitle={(e: React.ChangeEvent<HTMLInputElement>) =>
-            dispatch({
-              type: "SET_EDITNOTE_TITLE",
-              payload: e.target.value,
-            })
-          }
-          setEditNoteDesc={(e: React.ChangeEvent<HTMLInputElement>) =>
-            dispatch({
-              type: "SET_EDITNOTE_DESC",
-              payload: e.target.value,
-            })
-          }
-          setTitle={(e: React.ChangeEvent<HTMLInputElement>) =>
-            dispatch({
-              type: "SET_TITLE",
-              payload: e.target.value,
-            })
-          }
-          setDesc={(e: React.ChangeEvent<HTMLInputElement>) =>
-            dispatch({
-              type: "SET_DESC",
-              payload: e.target.value,
-            })
-          }
-          title={state.title}
-          desc={state.desc}
-        />
-        <NotesList
-          dayTitle={props.dayTitle}
-          AddNoteHandler={() => openModaltoAdd()}
-          deleteNote={(id: string) => deleteNote(id)}
-          openModal={(note: Note) => openModalToEdit(note)}
-          fetchNotes={() => fetchNotes()}
-          notesDay={state.notesDay}
-        />
-      </div>
-    </div>
+    <Container>
+      <NoteForm
+        isOpen={state.modalOpen}
+        isEditing={state.isEditing}
+        note={state.editNote}
+        editNote={editNote}
+        closeModal={() => dispatch({ type: "SET_MODAL_OPEN" })}
+        addNote={() => addNote()}
+        modalOpen={state.modalOpen}
+        editNoteTitle={state.editNoteTitle}
+        editNoteDesc={state.editNoteDesc}
+        setEditNoteTitle={(e: React.ChangeEvent<HTMLInputElement>) =>
+          dispatch({
+            type: "SET_EDITNOTE_TITLE",
+            payload: e.target.value,
+          })
+        }
+        setEditNoteDesc={(e: React.ChangeEvent<HTMLInputElement>) =>
+          dispatch({
+            type: "SET_EDITNOTE_DESC",
+            payload: e.target.value,
+          })
+        }
+        setTitle={(e: React.ChangeEvent<HTMLInputElement>) =>
+          dispatch({
+            type: "SET_TITLE",
+            payload: e.target.value,
+          })
+        }
+        setDesc={(e: React.ChangeEvent<HTMLInputElement>) =>
+          dispatch({
+            type: "SET_DESC",
+            payload: e.target.value,
+          })
+        }
+        title={state.title}
+        desc={state.desc}
+      />
+      <NotesList
+        dayTitle={props.dayTitle}
+        AddNoteHandler={() => openModaltoAdd()}
+        deleteNote={(id: string) => deleteNote(id)}
+        openModal={(note: Note) => openModalToEdit(note)}
+        fetchNotes={() => fetchNotes()}
+        notesDay={state.notesDay}
+      />
+    </Container>
   );
 }
 
