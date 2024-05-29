@@ -2,51 +2,43 @@ import { Link } from "react-router-dom";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import * as S from "./MainStyles";
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100vh;
-`;
-
-const Button = styled.button`
-  background-color: grey;
-  border-radius: 8px;
-  padding: 7px 13px;
-  margin: 10px;
-`;
-interface MainProps {
+type MainProps = {
   session: any;
-}
+};
 
-function Main(props: MainProps) {
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  font-size: 45px;
+  color: red;
+`;
+
+function Main({ session }: MainProps) {
   const history = useNavigate();
-  const session = props.session;
+
   const goAhead = (): void => {
     history("/notes");
   };
 
   return (
-    <Container>
+    <S.Container>
       {session ? (
         <>
           <div> Jesteś Zalogowany</div>
-          <Button onClick={goAhead}>Przejdz do notatek</Button>
+          <S.Button onClick={goAhead}>Przejdz do notatek</S.Button>
         </>
       ) : (
         <>
-          <Link to={"/logowanie"} className="logDiv">
+          <StyledLink to={"/logowanie"} className="logDiv">
             LOGOWANIE
-          </Link>
-          <Link to={"/rejestracja"} className="registerDiv">
-            REJESTRACJA{" "}
-          </Link>
+          </StyledLink>
+          <StyledLink to={"/rejestracja"} className="registerDiv">
+            REJESTRACJA
+          </StyledLink>
         </>
       )}
-    </Container>
+    </S.Container>
   );
 }
 

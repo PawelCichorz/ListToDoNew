@@ -8,32 +8,19 @@ import {
   fetchNotesBackend,
 } from "../backend";
 import reducer, { initialState } from "./reducerNotes";
-import styled from "styled-components";
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-`;
+import * as S from "./NotesStyles";
+import { Note } from "./type";
 
 type NotesProps = {
   day: string;
   dayTitle: string;
 };
 
-interface Note {
-  _id: string;
-  title: string;
-  body: string;
-}
-
-function Notes(props: NotesProps) {
+function Notes({ day, dayTitle }: NotesProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   async function fetchNotes() {
-    const notes = await fetchNotesBackend(props.day);
+    const notes = await fetchNotesBackend(day);
     dispatch({ type: "FETCH_NOTES", payload: notes });
   }
 
@@ -48,14 +35,14 @@ function Notes(props: NotesProps) {
   };
 
   const addNote = async () => {
-    const newNote = await addNoteBackend(state.title, state.desc, props.day);
+    const newNote = await addNoteBackend(state.title, state.desc, day);
     dispatch({ type: "SET_NOTES", payload: newNote });
     dispatch({ type: "SET_MODAL_OPEN" });
     dispatch({ type: "CLEAR_INPUT" });
   };
 
   async function deleteNote(id: string) {
-    await deleteNoteBackend(id, props.day);
+    await deleteNoteBackend(id, day);
     dispatch({ type: "DELETE_NOTE", payload: { id } });
   }
 
@@ -66,7 +53,7 @@ function Notes(props: NotesProps) {
       body: state.editNoteDesc,
     };
 
-    await editNoteBackend(updatedNote, props.day);
+    await editNoteBackend(updatedNote, day);
     dispatch({ type: "UPDATE_NOTE", payload: updatedNote });
     dispatch({ type: "SET_MODAL_OPEN" });
   };
@@ -81,11 +68,9 @@ function Notes(props: NotesProps) {
   };
 
   return (
-    <Container>
+    <S.Container>
       <NoteForm
-        isOpen={state.modalOpen}
         isEditing={state.isEditing}
-        note={state.editNote}
         editNote={editNote}
         closeModal={() => dispatch({ type: "SET_MODAL_OPEN" })}
         addNote={() => addNote()}
@@ -120,14 +105,14 @@ function Notes(props: NotesProps) {
         desc={state.desc}
       />
       <NotesList
-        dayTitle={props.dayTitle}
+        dayTitle={dayTitle}
         AddNoteHandler={() => openModaltoAdd()}
         deleteNote={(id: string) => deleteNote(id)}
         openModal={(note: Note) => openModalToEdit(note)}
         fetchNotes={() => fetchNotes()}
         notesDay={state.notesDay}
       />
-    </Container>
+    </S.Container>
   );
 }
 

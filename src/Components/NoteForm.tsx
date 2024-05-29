@@ -1,62 +1,9 @@
 import React from "react";
 
-import styled from "styled-components";
+import * as S from "./NoteFormStyles";
 
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-`;
-
-const ModalDiv = styled.div<{ modalOpen: boolean }>`
-  display: ${({ modalOpen }) => (modalOpen ? "flex" : "none")};
-  flex-direction: column;
-  position: fixed;
-  z-index: 1;
-  top: 100px;
-  margin: 0 auto;
-  width: 300px;
-  height: 350px;
-  background-color: #332f2f;
-  border-radius: 10px;
-  justify-content: center;
-  align-items: center;
-`;
-
-const EditNoteDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 250px;
-`;
-
-const Label = styled.label`
-  font-size: 15px;
-  padding: 10px 25px;
-  color: white;
-`;
-
-const Input = styled.input`
-  font-size: 15px;
-  padding: 10px 25px;
-  border-radius: 5px;
-`;
-
-const Button = styled.button`
-  background-color: white;
-  border-radius: 8px;
-  padding: 7px 13px;
-  color: black;
-  margin: 7px;
-`;
-
-interface NotesProps {
-  isOpen: boolean;
+type NotesProps = {
   isEditing: boolean;
-  note: Note;
   addNote: () => void;
   editNote: () => void;
   closeModal: () => void;
@@ -69,71 +16,80 @@ interface NotesProps {
   desc: string;
   setTitle: (e: React.ChangeEvent<HTMLInputElement>) => void;
   setDesc: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-interface Note {
-  _id: string;
-  title: string;
-  body: string;
-}
+};
 
-function NoteForm(props: NotesProps) {
+function NoteForm({
+  isEditing,
+  addNote,
+  editNote,
+  closeModal,
+  modalOpen,
+  editNoteTitle,
+  editNoteDesc,
+  title,
+  desc,
+  setEditNoteDesc,
+  setEditNoteTitle,
+  setTitle,
+  setDesc,
+}: NotesProps) {
   const saveNote = async () => {
-    if (props.isEditing) {
-      await props.editNote();
+    if (isEditing) {
+      await editNote();
     } else {
-      await props.addNote();
+      await addNote();
     }
   };
 
   return (
-    <Container>
-      <ModalDiv modalOpen={props.modalOpen}>
-        {props.isEditing ? (
-          <EditNoteDiv>
-            <Label>Tytuł:</Label>
+    <S.Container>
+      <S.ModalDiv modalOpen={modalOpen}>
+        {isEditing ? (
+          <S.EditNoteDiv>
+            <S.Label>Tytuł:</S.Label>
 
-            <Input
-              value={props.editNoteTitle}
+            <S.Input
+              value={editNoteTitle}
               type="text"
-              onChange={(e) => props.setEditNoteTitle(e)}
-            ></Input>
-            <Label>Opis:</Label>
-            <Input
-              value={props.editNoteDesc}
+              onChange={(e) => setEditNoteTitle(e)}
+            ></S.Input>
+            <S.Label>Opis:</S.Label>
+            <S.Input
+              value={editNoteDesc}
               type="text"
-              onChange={(e) => props.setEditNoteDesc(e)}
-            ></Input>
-            <Button className="button2" onClick={() => saveNote()}>
-              {props.isEditing ? "Zapisz" : "Dodaj"}
-            </Button>
-            <Button className="button1" onClick={() => props.closeModal()}>
+              onChange={(e) => setEditNoteDesc(e)}
+            ></S.Input>
+            <S.Button className="button2" onClick={() => saveNote()}>
+              {isEditing ? "Zapisz" : "Dodaj"}
+            </S.Button>
+            <S.Button className="button1" onClick={() => closeModal()}>
               Anuluj{" "}
-            </Button>
-          </EditNoteDiv>
+            </S.Button>
+          </S.EditNoteDiv>
         ) : (
           <>
-            <Label>Godzina:</Label>
-            <Input
-              value={props.title}
+            <S.Label>Godzina:</S.Label>
+            <S.Input
+              value={title}
               type="text"
-              onChange={(e) => props.setTitle(e)}
-            ></Input>
-            <Label>Opis:</Label>
-            <Input
-              value={props.desc}
+              onChange={(e) => setTitle(e)}
+            ></S.Input>
+            <S.Label>Opis:</S.Label>
+            <S.Input
+              value={desc}
               type="text"
-              onChange={(e) => props.setDesc(e)}
-            ></Input>
-            <Button onClick={() => props.addNote()} className="later">
+              onChange={(e) => setDesc(e)}
+            ></S.Input>
+            <S.Button onClick={() => addNote()} className="later">
               Dodaj
-            </Button>
-            <Button className="button1" onClick={props.closeModal}>
+            </S.Button>
+            <S.Button className="button1" onClick={closeModal}>
               Anuluj{" "}
-            </Button>
+            </S.Button>
           </>
         )}
-      </ModalDiv>
-    </Container>
+      </S.ModalDiv>
+    </S.Container>
   );
 }
 
