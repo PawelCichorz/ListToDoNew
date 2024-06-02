@@ -28,6 +28,7 @@ export async function loginBackend(email: string, password: string) {
     email: email,
     password: password,
   });
+  console.log("Backend response:", res); // Dodaj logowanie do diagnostyki
   return res;
 }
 

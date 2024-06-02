@@ -1,6 +1,8 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import { useForm } from "react-hook-form";
+
 import { loginBackend } from "../backend";
 import * as S from "./LoginStyles";
 
@@ -13,39 +15,44 @@ function Login({ onLoginSuccess }: LoginProps) {
   const [email, setEmail] = useState<string>("");
   const [password, setPass] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  async function handleSubmitL(e: FormEvent) {
-    e.preventDefault();
+  const onSubmit = async (value: any) => {
     try {
       const response = await loginBackend(email, password);
-
-      onLoginSuccess(response.data);
+      onLoginSuccess(response.config.data);
       history("/notes");
     } catch (error: any) {
       setError("Nieprawidłowy email lub hasło");
     }
-  }
-
+    console.log(value);
+  };
   return (
-    <S.Container method="POST" onSubmit={handleSubmitL}>
+    <S.Container method="POST" onSubmit={handleSubmit(onSubmit)}>
       <S.EmailDiv>
-        <label> Email:</label>
+        <label>Email:</label>
         <S.Input
           type="email"
-          name="email"
-          value={email}
+          {...register("email", { required: "Email jest wymagany" })}
           onChange={(e) => setEmail(e.target.value)}
-        ></S.Input>
+        />
+        {errors.email ? (
+          <p> {errors.email.message as React.ReactNode} </p>
+        ) : null}
       </S.EmailDiv>
 
       <S.PasswordDiv className="password">
-        <label> Hasło:</label>
+        <label>Hasło:</label>
         <S.Input
-          type="Password"
-          name="password"
-          value={password}
+          type="password"
+          {...register("password", { required: "Hasło jest wymagane" })}
           onChange={(e) => setPass(e.target.value)}
-        ></S.Input>
+        />
+        {errors.password && <p>{errors.password.message as React.ReactNode}</p>}
       </S.PasswordDiv>
       <p>{error}</p>
       <S.Button>ZALOGUJ</S.Button>
