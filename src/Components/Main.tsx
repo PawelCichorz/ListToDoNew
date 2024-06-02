@@ -16,7 +16,7 @@ const StyledLink = styled(Link)`
 
 function Main({ session }: MainProps) {
   const history = useNavigate();
-
+  console.log(session);
   const goAhead = (): void => {
     history("/notes");
   };

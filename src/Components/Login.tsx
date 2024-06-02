@@ -18,6 +18,7 @@ function Login({ onLoginSuccess }: LoginProps) {
     e.preventDefault();
     try {
       const response = await loginBackend(email, password);
+
       onLoginSuccess(response.data);
       history("/notes");
     } catch (error: any) {

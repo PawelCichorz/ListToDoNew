@@ -11,6 +11,7 @@ import * as S from "./AppStyles";
 
 function App() {
   const [session, setSession] = useState(null);
+
   const history = useNavigate();
   function handleLoginSuccess(user: any) {
     setSession(user);
@@ -24,13 +25,12 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Main session={session} />}></Route>
-        <Route path={`/rejestracja`} element={<Register />}></Route>
-
+        <Route path="/" element={<Main session={session} />} />
+        <Route path="/rejestracja" element={<Register />} />
         <Route
-          path={`/logowanie`}
+          path="/logowanie"
           element={<Login onLoginSuccess={handleLoginSuccess} />}
-        ></Route>
+        />
         <Route
           path="/notes"
           element={
@@ -38,8 +38,8 @@ function App() {
               <Notes day={"m"} dayTitle={"Poniedziałek"} />
               <Notes day={"t"} dayTitle={"Wtorek"} />
               <Notes day={"w"} dayTitle={"Środa"} />
-              <Notes day={"t"} dayTitle={"Czwartek"} />
-              <Notes day={"th"} dayTitle={"Piątek"} />
+              <Notes day={"th"} dayTitle={"Czwartek"} />
+              <Notes day={"f"} dayTitle={"Piątek"} />
               <Notes day={"s"} dayTitle={"Sobota"} />
               <Notes day={"su"} dayTitle={"Niedziela"} />
               <S.Div>
@@ -48,7 +48,7 @@ function App() {
               </S.Div>
             </>
           }
-        ></Route>
+        />
       </Routes>
     </div>
   );

@@ -1,93 +1,80 @@
+import { useContext } from "react";
 import React from "react";
-
+import EditingContext from "../context";
+import { Note } from "./type";
+import { addNoteBackend, editNoteBackend } from "../backend";
 import * as S from "./NoteFormStyles";
 
 type NotesProps = {
-  isEditing: boolean;
-  addNote: () => void;
-  editNote: () => void;
-  closeModal: () => void;
-  modalOpen: boolean;
-  editNoteTitle: string;
-  editNoteDesc: string;
-  setEditNoteTitle: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setEditNoteDesc: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  title: string;
-  desc: string;
-  setTitle: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setDesc: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  day: string;
+  editNoteDispatch: (note: Note) => void;
+  editNote: Note;
+  addNoteDispatch: (note: Note) => void;
 };
 
 function NoteForm({
-  isEditing,
-  addNote,
   editNote,
-  closeModal,
-  modalOpen,
-  editNoteTitle,
-  editNoteDesc,
-  title,
-  desc,
-  setEditNoteDesc,
-  setEditNoteTitle,
-  setTitle,
-  setDesc,
+  day,
+  addNoteDispatch,
+  editNoteDispatch,
 }: NotesProps) {
-  const saveNote = async () => {
-    if (isEditing) {
-      await editNote();
+  const { title, desc, isEditing, setTitle, setDesc, modalOpen, setModalOpen } =
+    useContext(EditingContext);
+
+  const addNote = async (day: string) => {
+    const newNote = await addNoteBackend(title, desc, day);
+
+    addNoteDispatch(newNote);
+
+    setModalOpen(false);
+  };
+
+  const funEditNote = async (day: string) => {
+    if (editNote) {
+      const updatedNote = {
+        ...editNote,
+        title: title,
+        body: desc,
+      };
+      console.log(day);
+      await editNoteBackend(updatedNote, day);
+      editNoteDispatch(updatedNote);
+      setModalOpen(false);
     } else {
-      await addNote();
+      console.log("chuja z tego");
+    }
+  };
+
+  const saveNote = async (day: string) => {
+    if (isEditing) {
+      await funEditNote(day);
+    } else {
+      await addNote(day);
     }
   };
 
   return (
     <S.Container>
       <S.ModalDiv modalOpen={modalOpen}>
-        {isEditing ? (
-          <S.EditNoteDiv>
-            <S.Label>Tytuł:</S.Label>
+        <S.EditNoteDiv>
+          <S.Label>Godzina:</S.Label>
+          <S.Input
+            value={title}
+            type="text"
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <S.Label>Opis:</S.Label>
+          <S.Input
+            value={desc}
+            type="text"
+            onChange={(e) => setDesc(e.target.value)}
+          />
+        </S.EditNoteDiv>
 
-            <S.Input
-              value={editNoteTitle}
-              type="text"
-              onChange={(e) => setEditNoteTitle(e)}
-            ></S.Input>
-            <S.Label>Opis:</S.Label>
-            <S.Input
-              value={editNoteDesc}
-              type="text"
-              onChange={(e) => setEditNoteDesc(e)}
-            ></S.Input>
-            <S.Button className="button2" onClick={() => saveNote()}>
-              {isEditing ? "Zapisz" : "Dodaj"}
-            </S.Button>
-            <S.Button className="button1" onClick={() => closeModal()}>
-              Anuluj{" "}
-            </S.Button>
-          </S.EditNoteDiv>
-        ) : (
-          <>
-            <S.Label>Godzina:</S.Label>
-            <S.Input
-              value={title}
-              type="text"
-              onChange={(e) => setTitle(e)}
-            ></S.Input>
-            <S.Label>Opis:</S.Label>
-            <S.Input
-              value={desc}
-              type="text"
-              onChange={(e) => setDesc(e)}
-            ></S.Input>
-            <S.Button onClick={() => addNote()} className="later">
-              Dodaj
-            </S.Button>
-            <S.Button className="button1" onClick={closeModal}>
-              Anuluj{" "}
-            </S.Button>
-          </>
-        )}
+        <S.Button onClick={() => saveNote(day)}>
+          {isEditing ? "Zapisz" : "Dodaj"}
+        </S.Button>
+        <S.Button onClick={() => setModalOpen(false)}>Anuluj</S.Button>
       </S.ModalDiv>
     </S.Container>
   );

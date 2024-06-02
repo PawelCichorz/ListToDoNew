@@ -1,12 +1,6 @@
 import axios from "axios";
 import { apiUrl } from "./BackendPaths";
-
-interface Note {
-  _id: string;
-  title: string;
-  body: string;
-  __v: number;
-}
+import { Note } from "./Components/type";
 
 export async function fetchNotesBackend(day: string) {
   const res = await axios.get(apiUrl + day);
