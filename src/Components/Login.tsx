@@ -12,18 +12,28 @@ type LoginProps = {
 
 function Login({ onLoginSuccess }: LoginProps) {
   const history = useNavigate();
-  const [email, setEmail] = useState<string>("");
-  const [password, setPass] = useState<string>("");
   const [error, setError] = useState<string>("");
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+    getValues,
+  } = useForm<{
+    email: string;
+    password: string;
+  }>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
   const onSubmit = async (value: any) => {
     try {
-      const response = await loginBackend(email, password);
+      const response = await loginBackend(
+        getValues("email"),
+        getValues("password"),
+      );
       onLoginSuccess(response.config.data);
       history("/notes");
     } catch (error: any) {
@@ -31,6 +41,7 @@ function Login({ onLoginSuccess }: LoginProps) {
     }
     console.log(value);
   };
+
   return (
     <S.Container method="POST" onSubmit={handleSubmit(onSubmit)}>
       <S.EmailDiv>
@@ -38,19 +49,16 @@ function Login({ onLoginSuccess }: LoginProps) {
         <S.Input
           type="email"
           {...register("email", { required: "Email jest wymagany" })}
-          onChange={(e) => setEmail(e.target.value)}
         />
         {errors.email ? (
           <p> {errors.email.message as React.ReactNode} </p>
         ) : null}
       </S.EmailDiv>
-
       <S.PasswordDiv className="password">
         <label>Hasło:</label>
         <S.Input
           type="password"
           {...register("password", { required: "Hasło jest wymagane" })}
-          onChange={(e) => setPass(e.target.value)}
         />
         {errors.password && <p>{errors.password.message as React.ReactNode}</p>}
       </S.PasswordDiv>

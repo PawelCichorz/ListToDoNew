@@ -1,71 +1,62 @@
-import { useState, useEffect, FormEvent } from "react";
-import { useNavigate } from "react-router-dom";
 import React from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import * as S from "./LoginStyles";
 import { registerBackend } from "../backend";
-import { passwordValidate, emailValidate } from "./registerValidate";
+import { emailValidate, passwordValidate } from "./registerValidate";
 
 function Register() {
   const history = useNavigate();
-  const [email, setEmail] = useState<string>("");
-  const [password, setPass] = useState<string>("");
-  const [error, setError] = useState<string>("");
-  const [errop, setErrop] = useState<string>("");
 
-  useEffect(() => {
-    if (emailValidate(email)) {
-      setError("");
-    } else if (email.length > 0 && emailValidate(email) === false) {
-      setError("Niepoprawny email");
-    } else if (email.length == 0) {
-      setError("");
-    }
-  }, [email]);
-  useEffect(() => {
-    if (passwordValidate(password)) {
-      setErrop("");
-    } else if (password.length > 0 && passwordValidate(password) === false) {
-      setErrop(
-        "Hasło musi zawierać minimum 4 znaki ,duże i małe litery oraz liczbę!",
-      );
-    } else if (password.length == 0) {
-      setErrop("");
-    }
-  }, [password]);
+  interface FormData {
+    email: string;
+    password: string;
+  }
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+
+    formState: { errors },
+  } = useForm<FormData>();
+
+  const onSubmit = async (data: FormData) => {
     try {
-      await registerBackend(email, password);
+      await registerBackend(data.email, data.password);
       history("/logowanie");
     } catch (error) {
       console.error("Błąd podczas rejestracji:", error);
     }
-  }
+  };
+
   return (
-    <S.Container className="form" method="POST" onSubmit={handleSubmit}>
+    <S.Container
+      className="form"
+      method="POST"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <S.EmailDiv className="email">
         <label> Email:</label>
         <S.Input
           type="email"
-          name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="inputone"
+          {...register("email", {
+            required: "Email jest wymagany",
+            validate: emailValidate,
+          })}
         ></S.Input>
-        <p>{error}</p>
+        <p>{errors.email && errors.email.message}</p>
       </S.EmailDiv>
 
       <S.PasswordDiv className="password">
         <label> Hasło:</label>
         <S.Input
           type="password"
-          name="password"
-          value={password}
-          onChange={(e) => setPass(e.target.value)}
-          className="inputtwo"
+          {...register("password", {
+            required: "Hasło jest wymagane",
+            validate: passwordValidate,
+          })}
         ></S.Input>
-        <p>{errop}</p>
+        <p>{errors.password && errors.password.message}</p>
       </S.PasswordDiv>
 
       <S.Button>ZAREJESTRUJ</S.Button>

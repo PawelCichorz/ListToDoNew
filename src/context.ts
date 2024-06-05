@@ -1,30 +1,12 @@
 import React from "react";
+import { State, initialState, Action } from "./Components/reducerNotes"; // Zakładam, że plik nazywa się reducerNotes.ts
 
-type EditingContextType = {
-  modalOpen: boolean;
-  title: string;
-  desc: string;
-  isEditing: boolean;
-  setDesc: (value: string | React.ChangeEvent<HTMLInputElement>) => void;
-  setTitle: (value: string | React.ChangeEvent<HTMLInputElement>) => void;
-  setIsEditing: (value: boolean) => void;
-  setModalOpen: (value: boolean) => void;
-  setTitleState: (value: string) => void;
-  setDescState: (value: string) => void;
-};
-
-const EditingContext = React.createContext<EditingContextType>({
-  modalOpen: false,
-  title: "",
-  desc: "",
-  isEditing: false,
-
-  setDesc: () => {},
-  setTitle: () => {},
-  setIsEditing: () => {},
-  setModalOpen: () => {},
-  setTitleState: () => {},
-  setDescState: () => {},
+const EditingContext = React.createContext<{
+  state: State;
+  dispatch: React.Dispatch<Action>;
+}>({
+  state: initialState,
+  dispatch: () => {},
 });
 
 export default EditingContext;

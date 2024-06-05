@@ -7,56 +7,48 @@ import EditingContext from "../context";
 type NotesListProps = {
   day: string;
   dayTitle: string;
-  fetchNotesDispatch: (notes: Note[]) => void;
-  deleteNoteDispatch: (id: string) => void;
-  notesDay: Note[];
-  openModalToEditDispatch: (note: Note) => void;
 };
 
-function NotesList({
-  openModalToEditDispatch,
-  fetchNotesDispatch,
-  day,
-  dayTitle,
-  deleteNoteDispatch,
-  notesDay,
-}: NotesListProps) {
+function NotesList({ day, dayTitle }: NotesListProps) {
+  const { state, dispatch } = useContext(EditingContext);
   useEffect(() => {
     fetchNotes();
-  }, []);
-
-  const { setIsEditing, setTitle, setDesc, setModalOpen } =
-    useContext(EditingContext);
+  }, [state.notesDay]);
 
   async function fetchNotes() {
     const notes = await fetchNotesBackend(day);
-    fetchNotesDispatch(notes);
+    dispatch({ type: "FETCH_NOTES", payload: notes });
   }
 
   async function deleteNote(id: string) {
     await deleteNoteBackend(id, day);
-    deleteNoteDispatch(id);
+    dispatch({ type: "DELETE_NOTE", payload: { id } });
   }
 
   const openModalToEdit = (note: Note) => {
-    setModalOpen(true);
-    setIsEditing(true);
-    setTitle(note.title);
-    setDesc(note.body);
-    openModalToEditDispatch(note);
+    dispatch({ type: "SET_MODALOPEN", payload: true });
+    dispatch({ type: "SET_ISEDITING", payload: true });
+    dispatch({ type: "SET_EDITNOTE", payload: note });
+    dispatch({
+      type: "SET_EDITNOTE",
+      payload: note,
+    });
   };
 
   const openModalToAdd = () => {
-    setModalOpen(true);
-    setIsEditing(false);
-    setTitle("");
-    setDesc("");
+    dispatch({ type: "SET_MODALOPEN", payload: true });
+    dispatch({ type: "SET_ISEDITING", payload: false });
+
+    dispatch({
+      type: "SET_EDITNOTE",
+      payload: { _id: "", title: "", body: "" },
+    });
   };
 
   return (
     <S.Container>
       <S.DayofWeek>{dayTitle}</S.DayofWeek>
-      {notesDay.map((notatka) => (
+      {state.notesDay.map((notatka) => (
         <S.OneFetchNotes key={notatka._id}>
           <S.TimeandDesc>
             <S.Time>Godzina:</S.Time> <div>{notatka.title}</div>

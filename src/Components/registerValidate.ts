@@ -11,6 +11,6 @@ export const passwordValidate = (text: string) => {
   if (low.test(text) && row.test(text) && nums.test(text)) {
     return true;
   } else {
-    return false;
+    return "Twoje hasło jest nieprawidłowe";
   }
 };
